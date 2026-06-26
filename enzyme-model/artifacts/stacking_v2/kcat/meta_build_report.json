@@ -1,0 +1,22 @@
+{
+  "task": "kcat",
+  "models_discovered": [
+    "baseline",
+    "condition",
+    "msa1d",
+    "msa2d"
+  ],
+  "meta_features_rows": 7,
+  "feature_columns": [
+    "y_true",
+    "y_baseline",
+    "y_condition",
+    "y_msa1d",
+    "y_msa2d"
+  ],
+  "split_distribution": {
+    "test": 7
+  },
+  "duplicate_sample_ids": 0,
+  "null_values": 0
+}

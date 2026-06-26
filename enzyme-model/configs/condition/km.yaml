@@ -1,0 +1,33 @@
+task: km
+
+dataset:
+  path: data/master/km.csv
+  smiles_col: smiles
+  target_col: target
+
+model:
+  n_estimators: 1000
+  learning_rate: 0.03
+  num_leaves: 63
+  subsample: 0.8
+  colsample_bytree: 0.8
+  random_state: 42
+
+train:
+  test_size: 0.2
+  val_size: 0.0
+
+features:
+  esm_model_name: "esmc_300m"
+  esm_embed_dim: 960
+  esm_batch_size: 200
+  smiles_seq_len: 220
+  smiles_embed_dim: 1024
+
+imputation:
+  temp_fill: null
+  ph_fill: null
+
+files:
+  model_save: "condition_predictor.joblib"
+  results_save: "condition_model_metrics.json"

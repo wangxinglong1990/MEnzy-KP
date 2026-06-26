@@ -1,0 +1,70 @@
+dataset: enzyme-model Master Dataset V2
+version: '2.0'
+created: '2026-06-23'
+fields:
+  sample_id:
+    type: str(16)
+    required: true
+    unique: true
+    description: Unique experiment ID = SHA256(seq|smiles|temp|ph)[:16]
+  protein_id:
+    type: str(16)
+    required: true
+    description: Unique protein ID = SHA256(sequence)[:16]
+  sequence:
+    type: str
+    required: true
+    description: Protein amino-acid sequence
+  smiles:
+    type: str
+    required: true
+    description: Substrate SMILES
+  temperature:
+    type: float
+    required: false
+    description: Reaction temperature in Celsius (nullable)
+  ph:
+    type: float
+    required: false
+    description: Reaction pH (nullable)
+  ec:
+    type: str
+    required: false
+    description: Enzyme Commission number
+  uniprot:
+    type: str
+    required: false
+    description: UniProt ID
+  source:
+    type: str
+    required: false
+    description: Data source (sabio / brenda / uniprot_search)
+  target:
+    type: float
+    required: true
+    description: log10 transformed target (log10kcat or log10km)
+  task:
+    type: str
+    required: true
+    enum:
+    - kcat
+    - km
+    description: Prediction target type
+  split:
+    type: str
+    required: true
+    enum:
+    - train
+    - val
+    - test
+    description: Sequence-aware split assignment
+split_strategy: protein-aware group-by-sequence 80/10/10
+id_system:
+  protein_id: SHA256(sequence)[:16] — for ESM cache, MSA1D, MSA2D
+  sample_id: SHA256(seq|smiles|temp|ph)[:16] — for training rows, stacking
+intended_models:
+- BaselineV2
+- ConditionV2
+- MSA1D
+- MSA2D
+- Stacking

@@ -1,0 +1,32 @@
+task: kcat
+
+dataset:
+  path: data/master/kcat.csv
+  sample_id_col: sample_id
+  protein_id_col: protein_id
+
+model:
+  n_estimators: 1000
+  learning_rate: 0.03
+  num_leaves: 63
+  subsample: 0.8
+  colsample_bytree: 0.8
+  random_state: 42
+
+train:
+  split_col: split
+
+features:
+  esm_model_name: "esmc_300m"
+  esm_embed_dim: 960
+  smiles_seq_len: 220
+  smiles_embed_dim: 1024
+  msa2d_dim: 14
+
+msa2d:
+  feat_dir: data/msa2d/features
+  a3m_dir: data/msa/a3m
+
+files:
+  model_save: "msa2d_predictor.joblib"
+  results_save: "msa2d_model_metrics.json"

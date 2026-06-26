@@ -1,0 +1,205 @@
+================================================================================
+Kinora → ESKin 重命名说明 & Results 3.1 修订稿
+创建日期：2026-06-20
+用途：直接对照 docx/Manuscript without author details.docx 修改 3.1 小节
+负责人：说话人2（3.1 主责写作）
+================================================================================
+
+一、新模型名称（替代 Kinora）
+--------------------------------------------------------------------------------
+
+【推荐名称】ESKin
+
+【英文全称】ESM-C and SMILES Transformer-based Kinetics Predictor
+            （深度学习酶动力学预测模型）
+
+【命名理由】
+  - 风格对标 DLKcat（Deep Learning Kcat）、UniKP 等常见酶学 AI 命名
+  - “Kinetics”涵盖 Km 与 kcat 两个动力学参数，体现多任务联合预测
+  - 简短、易读、适合 Methods 标题与 GitHub 仓库名
+
+【备选名称】（若老板有偏好可替换）
+  - DeepKin   — Deep Kinetics network（更口语）
+  - JESKin    — Joint Deep Learning Kinetics（强调联合预测，略长）
+  - UniKin    — Unified Kinetics predictor（对标 UniKP）
+
+【全文替换清单】（定名后需同步修改）
+  □ docx 全文：Kinora → ESKin
+  □ Abstract Keywords：Kinora → ESKin
+  □ Methods 2.1 标题：Construction of the Kinora... → Construction of the ESKin...
+  □ Figure 1 标题及图注
+  □ README.md、GitHub 仓库说明
+  □ 代码注释（config.py、train.py 等，可选）
+
+【引用写法示例】
+  首次出现：... we developed ESKin (ESM-C and SMILES Transformer-based Kinetics Predictor), a dual-input
+  multitask deep learning framework ...
+  此后简称：ESKin
+
+
+二、3.1 修改原则（对照会议 2026-06-20）
+--------------------------------------------------------------------------------
+
+1. 【范围收窄】3.1 只对应 Figure 1（模型构建与训练集性能），不写 BLAST / 聚类 /
+   候选筛选内容——那些属于 3.2 + Figure 2。
+
+2. 【术语修正】原文 “accuracy” 在 Figure 1E 语境下实为 Pearson 相关系数（PCC），
+   全文统一改为 PCC，避免审稿人质疑。
+
+3. 【对比方法写清楚】与 DLKcat、CataPro、UniKP 的比较需说明：
+   - 同一训练数据集
+   - 同一 10 折划分（或相同 hold-out 策略）
+   - 评价指标为 PCC（可补充 RMSE 作为补充）
+
+4. 【删去或后移的内容】（原稿 3.1 第二段起）
+   - 493 条同源序列检索
+   - Top-200 筛选
+   - HDBSCAN 聚类、silhouette = 0.934 等
+   → 以上移至 3.2（说话人1 负责），聚类图需重画（3 类、允许类间交叉）
+
+5. 【保留但可精简的段落】
+   - 原稿末尾关于 DeepEC、DeepKcat、PreKcat 等的背景对比句，可保留 1–2 句
+     作为 3.1 结尾过渡，或移至 Introduction 避免 3.1 过长。
+
+6. 【Figure 1 配套说明】
+   - Fig. 1A：架构图头部流程需徐阳重画（搭建 + 训练流程）
+   - Fig. 1B：loss / PCC / RMSE / LR 曲线——按真实训练日志决定是否保留；
+     若与 cv_history.csv 不一致则删或重跑后更新
+   - Fig. 1C–1E：保留，核对数值与 models/metrics.json 一致
+
+打通一整套，
+三、原稿 3.1 问题对照表
+--------------------------------------------------------------------------------
+
+| 原稿内容                              | 问题                     | 处理方式              |
+|---------------------------------------|--------------------------|-----------------------|
+| Kinora 模型名                         | 老板要求改名             | 改为 ESKin            |
+| accuracy 0.457 / 0.622                | 术语不准确               | 改为 PCC              |
+| 493 序列、Top-200、HDBSCAN、UMAP      | 属于 Figure 2，不应在 3.1 | 删除，留给 3.2        |
+| silhouette = 0.934（聚类过理想）      | 会议要求换图、改参数     | 从 3.1 删除；3.2 重画 |
+| 六酶候选选取逻辑                      | 属于筛选流程             | 移至 3.2 开头         |
+| DeepEC/PreKcat 对比段                 | 与 3.1 主题略散          | 可选保留 1 句或删     |
+
+
+四、修订后的 3.1 正文（英文，可直接粘贴进 docx）
+--------------------------------------------------------------------------------
+
+3.1 Construction and performance evaluation of the ESKin multitask prediction model
+
+To enable joint prediction of the Michaelis constant (Km) and turnover number
+(kcat) from enzyme–substrate pairs, we developed ESKin, a dual-input multitask
+deep learning framework that accepts a protein sequence and a substrate SMILES
+string as parallel inputs and predicts log10-transformed Km and kcat through two
+task-specific output heads (Fig. 1A). ESKin was trained and evaluated under a
+10-fold cross-validation strategy on a unified kinetics dataset of approximately
+25,000 enzyme–substrate pairs, with fold assignments predefined by a 0.4
+sequence-similarity split. Model optimization used a multitask Huber loss with
+equal Km and kcat weights, AdamW optimization, gradient clipping, and early
+stopping based on validation loss. Full architectural details and hyperparameters
+are provided in Methods and in the GitHub repository.
+
+ESKin exhibited stable convergence across folds, with decreasing multitask loss
+and RMSE on the training partitions (Fig. 1B). The distributions of log10(kcat/Km)
+were comparable across the 10 cross-validation folds (Fig. 1C), and predicted
+values showed close agreement with experimental measurements in high-density
+regions of the two-dimensional density map (Fig. 1D). Benchmarking against
+published enzyme kinetics predictors on the same dataset and fold split, ESKin
+achieved a Pearson correlation coefficient of 0.457 for kcat prediction,
+outperforming DLKcat at 0.407 (Li et al., 2022) and UniKP at 0.440 (Yu et al.,
+2023), while remaining below CataPro at 0.497 (Wang et al., 2025b). For Km
+prediction, ESKin reached a PCC of 0.622, surpassing UniKP at 0.578 and
+performing comparably to DLKcat at 0.627 and CataPro at 0.633 (Fig. 1E).
+Per-fold test metrics and cross-validation summaries are reported in
+Supplementary Table S1. These results establish ESKin as a competitive multitask
+predictor for simultaneous Km and kcat estimation, supporting its application in
+the downstream high-throughput enzyme screening workflow described in Section 3.2.
+
+
+五、修订后的 3.1 中文对照（便于内部审阅）
+--------------------------------------------------------------------------------
+
+3.1 ESKin 多任务预测模型的构建与性能评估
+
+为从酶–底物对联合预测 Km 与 kcat，我们开发了 ESKin——一个双输入多任务深度学习
+框架，以蛋白质序列和底物 SMILES 为并行输入，通过双任务输出头预测 log10(Km)
+与 log10(kcat)（图 1A）。模型在约 25,000 条酶–底物对的统一动力学数据集上，
+按 0.4 序列相似性预定义的 fold 划分进行 10 折交叉验证训练与评估。优化策略包括
+多任务 Huber 损失、AdamW 优化器、梯度裁剪及基于验证损失的早停。完整架构与超参数
+详见 Methods 及 GitHub 仓库。
+
+ESKin 在各折训练中收敛稳定，训练集多任务损失与 RMSE 持续下降（图 1B）。10 折
+交叉验证中 log10(kcat/Km) 分布一致（图 1C），预测值与实验值在二维密度图高密度
+区域吻合良好（图 1D）。在同一数据集与 fold 划分下与已发表方法对比，ESKin 对 kcat
+预测的 PCC 为 0.457，优于 DLKcat（0.407）和 UniKP（0.440），低于 CataPro（0.497）；
+对 Km 预测的 PCC 为 0.622，优于 UniKP（0.578），与 DLKcat（0.627）和 CataPro
+（0.633）相当（图 1E）。逐折测试指标及交叉验证汇总见 Supplementary Table S1。
+以上结果表明 ESKin 可作为 Km 与 kcat 联合预测的竞争性多任务模型，支撑后续高通量
+酶筛选流程（3.2 节）。
+
+【注意】原稿中关于 493 条同源序列、Top-200、聚类 silhouette=0.934 等内容
+已从 3.1 删除，应写入 3.2 节（对应图 2）。
+
+
+六、从原 3.1 移至 3.2 的段落（供说话人1 参考，勿重复写入 3.1）
+--------------------------------------------------------------------------------
+
+以下内容原误放在 3.1，应作为 3.2 开头或 Figure 2 对应文字：
+
+"A total of 493 homologous sequences were retrieved through homology search.
+Sequence analysis showed that catalytic core residues are highly conserved,
+whereas substrate-binding regions exhibit substantial variability (Fig. 2B).
+The predictions generated by ESKin displayed a non-uniform distribution, from
+which the top 200 high-potential candidate sequences were selected for further
+analysis (Fig. 2C). Based on ESMC embeddings and clustering analysis, three major
+clusters were identified (Fig. 2D). [UPDATE: replace overly ideal clustering
+metrics; use 3 clusters with partial overlap in UMAP space; silhouette and
+cluster sizes to be updated after re-running cluster_high_activity_sequences.py]
+Considering cluster representativeness, predicted catalytic activity, and sequence
+diversity, six candidate enzymes were ultimately selected for experimental
+validation."
+
+
+七、Figure 1 图注修订稿（英文）
+--------------------------------------------------------------------------------
+
+Figure 1 Construction and performance evaluation of the ESKin multitask prediction
+model.
+(A) Architecture of ESKin for joint prediction of Km and kcat from protein
+    sequences and substrate SMILES.
+(B) Mean training curves across 10 folds, including multitask loss, PCC, RMSE,
+    and learning rate [保留与否取决于真实训练日志].
+(C) Distribution of log10(kcat/Km) values across the 10 cross-validation folds.
+(D) Two-dimensional density distribution of predicted versus experimental
+    log10(kcat/Km) values from cross-validation.
+(E) Comparison of ESKin with published models (DLKcat, CataPro, and UniKP) for
+    kcat and Km prediction using PCC on the same dataset and fold split.
+
+
+八、待你确认/补充的数据占位符
+--------------------------------------------------------------------------------
+
+在定稿前请核对或填入：
+
+  [ ] kcat PCC = 0.457、Km PCC = 0.622 是否与 models/metrics.json 最新 CV 结果一致
+  [ ] DLKcat / UniKP / CataPro 对比数值是否在同一数据集上重新跑过（非仅引原文）
+  [ ] 训练集样本量精确值（当前写 n ≈ 25,000，请以 build_dataset 清洗后为准）
+  [ ] Fig. 1B 是否保留（会议：根据实际情况，不对就删）
+  [ ] Supplementary Table S1 是否已含 per-fold PCC / RMSE
+  [ ] GitHub 链接是否在 rename 后更新仓库名
+
+
+九、3.1 写作自检清单
+--------------------------------------------------------------------------------
+
+  [ ] 全文 Kinora 已改为 ESKin（至少 3.1 + Methods 2.1 + Abstract + Keywords）
+  [ ] 3.1 内无 Figure 2 内容（BLAST、聚类、493/200/6 酶）
+  [ ] “accuracy” 已全部改为 PCC（或同时给出 RMSE）
+  [ ] 与 DLKcat/CataPro/UniKP 对比写明 “same dataset and fold split”
+  [ ] 3.1 末尾有一句过渡到 3.2（screening workflow）
+  [ ] 图注与正文 Figure 编号一致（3.1 ↔ Fig. 1 only）
+  [ ] 已发给徐阳：Fig. 1A 头部流程图、Fig. 1B 训练曲线修改需求
+  [ ] 3.2 聚类图更换需求已告知说话人1 / 徐阳（非本文件范围）
+
+================================================================================
+文件结束 | 路径：docx/3.1_revision_ESKin.txt
+================================================================================

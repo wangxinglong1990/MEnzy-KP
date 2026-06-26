@@ -1,0 +1,33 @@
+=== Kinora-main 工作流实验记录 ===
+时间: 2025-06-25
+目标: 5000条PSI-BLAST同源序列为背景，筛选Top候选，标注6条代表性序列
+数据: textdocs/原始final_submission_5000_sequences 2.csv (5000条)
+      datafor/Ajinomoto_psiblast_output.xlsx (493条注释序列)
+      textdocs/sixdata.text (6条查询种子: AcAP,TcAP,EaAP,KoAP,MnAP,MsAP)
+模型: enzyme-model ExtraTreesRegressor (km_predictor.joblib, kcat_predictor.joblib)
+特征: ESMC_300M (960维) + SMILES Transformer (1024维) → 1984维
+GPU: Linux xlw@192.168.5.23 RTX 4070Ti SUPER
+渲染: Mac Helvetica 300DPI
+
+=== 尝试1: 原始5000 + 统一底物 ===
+底物: COC(=O)CC[NH3+]
+结果: Top10% cutoff=kcat/Km=108, sixdata排名4147~4976/5000 (全在灰区)
+原因: 5000条含大量远源序列, kcat/Km跨度1~930
+
+=== 尝试2: ESMC相似度过滤 sim>=0.35 (参考=493条)===
+方法: 以493条为参考, 保留ESMC余弦相似度>=0.35的5000序列
+结果: 650+493=1143条, Top10% cutoff=71, 493排名305~1140 (全在灰区)
+
+=== 尝试3: ESMC相似度过滤 sim>=0.15 (参考=sixdata 6条)===
+方法: 以sixdata 6条为参考, 相似度分布 p50=0.059 p90=0.183 p99=0.311
+结果: 792+6=798条, Top10% cutoff=57
+      AcAP#781 TcAP#797 EaAP#778 KoAP#788 MnAP#739 MsAP#697 (全在灰区)
+
+=== 核心结论 ===
+PSI-BLAST找出的同源物预测催化效率高于野生型查询种子——这是筛选实验的预期结果。
+三种过滤方法结论一致，结果稳健。
+
+=== 最终图 ===
+outputs/run_best/histogram.png
+横轴: Predicted log10(Kcat/Km)  纵轴: Number of homologs
+灰柱: 剩余序列  绿柱: Top10%候选  红虚线: 截断线  红三角: 6条sixdata

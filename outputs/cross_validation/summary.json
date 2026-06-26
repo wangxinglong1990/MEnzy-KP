@@ -1,0 +1,32 @@
+{
+  "model": "LightGBM (n_estimators=100, max_depth=10, num_leaves=31, n_jobs=8)",
+  "features": "ESMC_300M (960-dim, GPU-encoded)",
+  "n_samples": 25831,
+  "n_folds": 10,
+  "kcat": {
+    "r2_mean": -0.002646486510234891,
+    "r2_std": 0.002480229445285732,
+    "pearson_r_mean": 0.05183571354615772,
+    "pearson_r_std": 0.1270528208110449
+  },
+  "km": {
+    "r2_mean": -0.012772543555454019,
+    "r2_std": 0.03404386064336894,
+    "pearson_r_mean": 0.0792725342539122,
+    "pearson_r_std": 0.06849584958719863
+  },
+  "ratio": {
+    "r2_mean": -0.0027422471095460478,
+    "r2_std": 0.002868315013266749,
+    "pearson_r_mean": 0.053806109153654934,
+    "pearson_r_std": 0.041218355936978396
+  },
+  "clustering_stability": {
+    "K": 10,
+    "ARI_mean": 0.4766544127188892,
+    "ARI_std": 0.18702255867904366,
+    "NMI_mean": 0.4217321141239396,
+    "NMI_std": 0.13972001780401372,
+    "n_bootstrap": 30
+  }
+}

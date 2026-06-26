@@ -1,0 +1,15 @@
+task: kcat
+meta_model: ridge
+
+train_splits:
+  - train
+  - val
+eval_split: test
+
+test_size: 0.2
+
+features:
+  - y_baseline
+  - y_condition
+  - y_msa1d
+  - y_msa2d

@@ -1,0 +1,30 @@
+# ========================
+# Large data / model files
+# Upload to cloud storage (Google Drive, Dropbox, etc.)
+# ========================
+enzyme-model/data/msa/
+enzyme-model/data/features/
+enzyme-model/artifacts/baseline/
+
+# Original exclusions
+SMILES_Transform/trfm_12_23000.pkl
+data/weights/esmc_300m_2024_12_v0.pth
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+
+# ========================
+# macOS
+# ========================
+.DS_Store
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
