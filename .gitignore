@@ -1,20 +1,16 @@
 # ========================
-# Large data / model files
-# Upload to cloud storage (Google Drive, Dropbox, etc.)
-# ========================
-enzyme-model/data/msa/
-enzyme-model/data/features/
-enzyme-model/artifacts/baseline/
-
-# Original exclusions
-SMILES_Transform/trfm_12_23000.pkl
-data/weights/esmc_300m_2024_12_v0.pth
-
-# ========================
 # Python
 # ========================
 __pycache__/
 *.py[cod]
+*.pkl
+*.pth
+
+# ========================
+# Node
+# ========================
+frontend/node_modules/
+frontend/dist/
 
 # ========================
 # macOS
@@ -28,3 +24,41 @@ __pycache__/
 .idea/
 *.swp
 *.swo
+
+# ========================
+# Large data / model files
+# Upload to cloud storage (Google Drive, Dropbox, etc.)
+# ========================
+enzyme-model/artifacts/
+enzyme-model/data/
+data/kcat-over-Km-data_0.4simi-10fold.csv
+data/weights/
+SMILES_Transform/
+
+# ========================
+# Generated outputs
+# ========================
+outputs/
+
+# ========================
+# Sequence dumps
+# ========================
+seqdump/
+
+# ========================
+# Text data dumps (large CSVs)
+# ========================
+textdocs/*.csv
+textdocs/*.xlsx
+
+# ========================
+# Manuscript documents
+# ========================
+docx/
+docxp/
+文档公式/
+
+# ========================
+# Logs
+# ========================
+log.text
