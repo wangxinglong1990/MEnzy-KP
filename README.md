@@ -1,6 +1,6 @@
-# ESKin
+# MEnzy-KP
 
-ESKin is a deep-learning platform for enzyme kinetics prediction and analysis. It predicts **Km** and **kcat** jointly using multitask neural networks, supports cross-validation training, batch inference, candidate screening with clustering-based analysis, and molecular docking — all wrapped with a React frontend and FastAPI backend.
+MEnzy-KP is a deep-learning platform for enzyme kinetics prediction and analysis. It predicts **Km** and **kcat** jointly using multitask neural networks, supports cross-validation training, batch inference, candidate screening with clustering-based analysis, and molecular docking — all wrapped with a React frontend and FastAPI backend.
 
 ![Workflow](./workflow.png)
 
